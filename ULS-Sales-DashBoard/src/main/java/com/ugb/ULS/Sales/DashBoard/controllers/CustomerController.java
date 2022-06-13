@@ -3,6 +3,7 @@ package com.ugb.ULS.Sales.DashBoard.controllers;
 
 import com.ugb.ULS.Sales.DashBoard.models.Customer;
 import com.ugb.ULS.Sales.DashBoard.services.CustomerService;
+import com.ugb.ULS.Sales.DashBoard.utility.ErrorMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +24,20 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private ErrorMapping errorMapping;
     @PostMapping("/save")
     public ResponseEntity<?> saveOrUpdate(@Valid @RequestBody Customer customer , BindingResult result){
 
-        if(result.hasErrors()){
-            Map<String , String> errorMap = new HashMap<>();
-            for(FieldError error : result.getFieldErrors()){
-                errorMap.put(error.getField() ,error.getDefaultMessage());
-            }
-            return new ResponseEntity<>(errorMap , HttpStatus.BAD_REQUEST);
+        var validatedResult = errorMapping.validate(result);
+
+        if(validatedResult != null){
+            return validatedResult;
         }
 
-        return  new ResponseEntity<>(customerService.saveOrUpdate(customer) , HttpStatus.CREATED);
+        var savedCustomer = customerService.saveOrUpdate(customer);
+
+        return  new ResponseEntity<>(savedCustomer , HttpStatus.CREATED);
 
     }
 

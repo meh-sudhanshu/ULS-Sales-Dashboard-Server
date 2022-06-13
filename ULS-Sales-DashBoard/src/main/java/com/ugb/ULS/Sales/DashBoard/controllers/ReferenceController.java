@@ -3,6 +3,7 @@ package com.ugb.ULS.Sales.DashBoard.controllers;
 
 import com.ugb.ULS.Sales.DashBoard.models.Reference;
 import com.ugb.ULS.Sales.DashBoard.services.ReferenceService;
+import com.ugb.ULS.Sales.DashBoard.utility.ErrorMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,24 +23,20 @@ public class ReferenceController {
     @Autowired
     private ReferenceService referenceService;
 
-
+    @Autowired
+    private ErrorMapping errorMapping;
 
     @PostMapping("/save")
     public ResponseEntity<?> saveOrUpdate(@Valid @RequestBody Reference reference , BindingResult result){
 
-        if(result.hasErrors()){
-            Map<String , String > errorMap = new HashMap<>();
+        var validatedResult = errorMapping.validate(result);
 
-            for(FieldError error : result.getFieldErrors()){
-                errorMap.put(error.getField() , error.getDefaultMessage());
-            }
-
-
-            return  new ResponseEntity<>(errorMap , HttpStatus.BAD_REQUEST);
+        if(validatedResult != null){
+            return validatedResult;
         }
 
 
-        Reference savedReference = referenceService.saveOrUpdate(reference);
+        var savedReference = referenceService.saveOrUpdate(reference);
 
         return new ResponseEntity<>(savedReference , HttpStatus.CREATED);
 
