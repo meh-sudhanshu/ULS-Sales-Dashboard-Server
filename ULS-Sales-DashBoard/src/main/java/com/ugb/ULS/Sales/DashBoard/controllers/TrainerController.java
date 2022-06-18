@@ -27,16 +27,21 @@ public class TrainerController {
     @PostMapping("/save")
     public ResponseEntity<?>  saveOrUpdate(@Valid @RequestBody Trainer trainer, BindingResult result){
 
-        var validatedResult = errorMapping.validate(result);
+        var requestBodyError = errorMapping.validate(result);
 
-        if(validatedResult != null){
-            return validatedResult;
+        if(requestBodyError != null){
+            return requestBodyError;
         }
 
 
         var savedTrainer = trainerService.saveOrUpdate(trainer);
 
         return  new ResponseEntity<>(trainer , HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getAllTrainers")
+    public Iterable<Trainer> getAllTrainers(){
+        return trainerService.getAllTrainers();
     }
 
 }

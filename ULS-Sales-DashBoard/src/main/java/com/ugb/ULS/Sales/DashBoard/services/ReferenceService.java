@@ -6,6 +6,8 @@ import com.ugb.ULS.Sales.DashBoard.repositories.ReferenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Ref;
+
 @Service
 public class ReferenceService {
 
@@ -16,5 +18,7 @@ public class ReferenceService {
     public Reference saveOrUpdate(Reference reference){
         return referenceRepository.save(reference);
     }
+
+    public Iterable<Reference> getAllReferences(){return  referenceRepository.findAll();}
 
 }

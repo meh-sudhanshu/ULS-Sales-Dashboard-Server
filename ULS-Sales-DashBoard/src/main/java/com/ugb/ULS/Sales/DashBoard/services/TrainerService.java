@@ -18,4 +18,6 @@ public class TrainerService {
         return trainerRepository.save(trainer);
     }
 
+    public Iterable<Trainer> getAllTrainers(){return  trainerRepository.findAll();}
+
 }

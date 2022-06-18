@@ -28,16 +28,21 @@ public class CustomerController {
     @PostMapping("/save")
     public ResponseEntity<?> saveOrUpdate(@Valid @RequestBody Customer customer , BindingResult result){
 
-        var validatedResult = errorMapping.validate(result);
+        var requestBodyError = errorMapping.validate(result);
 
-        if(validatedResult != null){
-            return validatedResult;
+        if(requestBodyError != null){
+            return requestBodyError;
         }
 
         var savedCustomer = customerService.saveOrUpdate(customer);
 
         return  new ResponseEntity<>(savedCustomer , HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/getAllCustomers")
+    public Iterable<Customer> getAllCustomers(){
+        return customerService.getAllCustomer();
     }
 
 }

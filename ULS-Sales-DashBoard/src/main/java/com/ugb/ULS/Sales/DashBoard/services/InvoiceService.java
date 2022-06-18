@@ -16,5 +16,7 @@ public class InvoiceService {
         return invoiceRepository.save(invoice);
     }
 
+    public Iterable<Invoice> getAllInvoice(){return  invoiceRepository.findAll();}
+
 
 }

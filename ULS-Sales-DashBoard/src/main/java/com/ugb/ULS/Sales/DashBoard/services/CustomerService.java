@@ -17,4 +17,8 @@ public class CustomerService {
     public Customer saveOrUpdate(Customer customer){
         return customerRepository.save(customer);
     }
+
+    public Iterable<Customer> getAllCustomer(){
+        return  customerRepository.findAll();
+    }
 }

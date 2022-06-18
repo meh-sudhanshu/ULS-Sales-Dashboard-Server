@@ -17,5 +17,7 @@ public class ProfitReportService {
         return  profitReportRepository.save(profitReport);
     }
 
-
+    public Iterable<ProfitReport> getAllProfitReports(){
+        return  profitReportRepository.findAll();
+    }
 }

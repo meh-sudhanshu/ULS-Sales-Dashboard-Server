@@ -28,10 +28,10 @@ public class ReferenceController {
     @PostMapping("/save")
     public ResponseEntity<?> saveOrUpdate(@Valid @RequestBody Reference reference , BindingResult result){
 
-        var validatedResult = errorMapping.validate(result);
+        var requestBodyError = errorMapping.validate(result);
 
-        if(validatedResult != null){
-            return validatedResult;
+        if(requestBodyError != null){
+            return requestBodyError;
         }
 
 
@@ -41,6 +41,7 @@ public class ReferenceController {
 
     }
 
-
+    @GetMapping("/getAllReferences")
+    public Iterable<Reference> getAllReferences(){return referenceService.getAllReferences();}
 
 }
